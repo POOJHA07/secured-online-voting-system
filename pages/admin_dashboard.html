@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        body {
+            background-color: #121212; /* Dark mode background */
+            color: #ffffff; /* Text color */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        button {
+            background-color: #58CD77;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #partyList, #voteResults {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #voteResults {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+        
+        <!-- Form to add a party -->
+        <h2>Add Political Party</h2>
+        <input type="text" id="partyName" placeholder="Enter Party Name" />
+        <button onclick="addParty()">Add Party</button>
+
+        <h3>List of Parties</h3>
+        <ul id="partyList"></ul>
+
+        <h3>Vote Results</h3>
+        <ul id="voteResults"></ul>
+    </div>
+
+    <script>
+        // Load parties and votes from localStorage when the page loads
+        window.onload = function () {
+            loadParties();
+            loadVoteResults();
+        };
+
+        // Function to add party and save to localStorage
+        function addParty() {
+            const partyName = document.getElementById("partyName").value;
+            if (partyName) {
+                let parties = JSON.parse(localStorage.getItem("parties")) || [];
+                parties.push(partyName);
+                localStorage.setItem("parties", JSON.stringify(parties));
+                loadParties();
+                document.getElementById("partyName").value = ''; // Clear input
+            }
+        }
+
+        // Function to load and display parties
+        function loadParties() {
+            const partyList = document.getElementById("partyList");
+            let parties = JSON.parse(localStorage.getItem("parties")) || [];
+            partyList.innerHTML = ''; // Clear existing list
+            parties.forEach(party => {
+                const li = document.createElement("li");
+                li.textContent = party;
+                partyList.appendChild(li);
+            });
+        }
+
+        // Function to load and display vote results
+        function loadVoteResults() {
+            const voteResults = document.getElementById("voteResults");
+            let votes = JSON.parse(localStorage.getItem("votes")) || [];
+            const voteCounts = {};
+
+            // Count votes for each party
+            votes.forEach(vote => {
+                voteCounts[vote] = (voteCounts[vote] || 0) + 1;
+            });
+
+            // Clear existing results
+            voteResults.innerHTML = '';
+
+            // Display vote results
+            for (const party in voteCounts) {
+                const li = document.createElement("li");
+                li.textContent = `${party}: ${voteCounts[party]} votes`;
+                voteResults.appendChild(li);
+            }
+        }
+    </script>
+</body>
+</html>

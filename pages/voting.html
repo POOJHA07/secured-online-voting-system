@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Login</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js"></script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+    
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            max-width: 800px; /* Increased width */
+            margin: auto;
+        }
+    
+        input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #2e2e2e;
+            color: #fff;
+        }
+    
+        button {
+            background-color: #58CD77;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    
+        #voteOptions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+    
+        label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+    
+        input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.5);
+        }
+    
+        #timer {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    
+        /* Modal Popup Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+    
+        .modal-content {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            text-align: center;
+            max-width: 600px; /* Increased width */
+            margin: auto;
+            width: 90%; /* Ensures responsive behavior */
+        }
+    
+        .modal-content h2 {
+            color: #58CD77;
+        }
+    
+        .modal-content p {
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+    
+        .close-btn {
+            margin-top: 20px;
+            background-color: #58CD77;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    
+    <!-- <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            max-width: 600px;
+            margin: auto;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #2e2e2e;
+            color: #fff;
+        }
+
+        button {
+            background-color: #58CD77;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #voteOptions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        input[type="radio"] {
+            margin-right: 10px;
+            transform: scale(1.5);
+        }
+
+        #timer {
+            margin-bottom: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        /* Modal Popup Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            color: #fff;
+            text-align: center;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .modal-content h2 {
+            color: #58CD77;
+        }
+
+        .modal-content p {
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            background-color: #58CD77;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style> -->
+</head>
+<body>
+    <div class="container">
+        <h1>Voter Login</h1>
+        <form id="votingForm">
+            <label for="voterName">Name:</label>
+            <input type="text" id="voterName" placeholder="Enter your name" required>
+            <label for="voterId">Voter ID:</label>
+            <input type="text" id="voterId" placeholder="Enter your voter ID" required>
+
+            <div id="voteOptions"></div>
+
+            <div id="timer">Time left: <span id="timeRemaining">60</span> seconds</div>
+            <button type="submit" id="voteBtn">Cast Vote</button>
+        </form>
+    </div>
+
+    <!-- Modal for Vote Success -->
+    <div id="voteModal" class="modal">
+        <div class="modal-content">
+            <h2>Vote Cast Successfully!</h2>
+            <p><strong>Name:</strong> <span id="modalName"></span></p>
+            <p><strong>Voter ID:</strong> <span id="modalVoterId"></span></p>
+            <p><strong>Party:</strong> <span id="modalParty"></span></p>
+            <p><strong>Vote Status:</strong> <span id="modalStatus">Successful</span></p>
+            <p><strong>Digital Signature:</strong> <span id="digitalSignature"></span></p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const AES_KEY = "mysecurekey12345";
+
+        function encryptAES(data) {
+            return CryptoJS.AES.encrypt(data, AES_KEY).toString();
+        }
+
+        window.onload = loadParties;
+
+        function loadParties() {
+            const voteOptions = document.getElementById("voteOptions");
+            const parties = JSON.parse(localStorage.getItem("parties")) || [];
+            voteOptions.innerHTML = '';
+            parties.forEach(party => {
+                const label = document.createElement("label");
+                const radio = document.createElement("input");
+                radio.type = "radio";
+                radio.name = "party";
+                radio.value = party;
+                label.appendChild(radio);
+                label.appendChild(document.createTextNode(party));
+                voteOptions.appendChild(label);
+            });
+        }
+
+        // Timer logic
+        let timeLeft = 60;
+        const timerInterval = setInterval(() => {
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById("voteBtn").disabled = true;
+            }
+            document.getElementById("timeRemaining").textContent = timeLeft;
+            timeLeft -= 1;
+        }, 1000);
+
+        document.getElementById("votingForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const name = document.getElementById("voterName").value;
+            const voterId = document.getElementById("voterId").value;
+            const selectedParty = document.querySelector('input[name="party"]:checked');
+
+            if (selectedParty) {
+                const partyName = selectedParty.value;
+
+                // Encrypt data
+                const encryptedVoterId = encryptAES(voterId);
+                const digitalSignature = encryptAES(`${name}:${voterId}`);
+
+                // Store vote
+                let votes = JSON.parse(localStorage.getItem("votes")) || [];
+                votes.push(partyName);
+                localStorage.setItem("votes", JSON.stringify(votes));
+
+                // Show modal with confirmation
+                showModal(name, voterId, partyName, digitalSignature);
+
+                // Reset form
+                document.getElementById("votingForm").reset();
+                loadParties();
+            } else {
+                alert("Please select a party to vote for.");
+            }
+        });
+
+        function showModal(name, voterId, partyName, digitalSignature) {
+            document.getElementById("modalName").textContent = name;
+            document.getElementById("modalVoterId").textContent = voterId;
+            document.getElementById("modalParty").textContent = partyName;
+            document.getElementById("digitalSignature").textContent = digitalSignature;
+            document.getElementById("voteModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("voteModal").style.display = "none";
+            loadVoteResults(); // Update results on closing modal
+        }
+
+        // Function to load vote results in the admin dashboard
+        function loadVoteResults() {
+            const voteResults = document.getElementById("voteResults");
+            let votes = JSON.parse(localStorage.getItem("votes")) || [];
+            const voteCounts = {};
+
+            // Count votes for each party
+            votes.forEach(vote => {
+                voteCounts[vote] = (voteCounts[vote] || 0) + 1;
+            });
+
+            // Clear existing results
+            voteResults.innerHTML = '';
+
+            // Display vote results
+            for (const party in voteCounts) {
+                const li = document.createElement("li");
+                li.textContent = `${party}: ${voteCounts[party]} votes`;
+                voteResults.appendChild(li);
+            }
+        }
+    </script>
+</body>
+</html>

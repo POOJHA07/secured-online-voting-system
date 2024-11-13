@@ -1,0 +1,114 @@
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+}
+
+.role-selection {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+}
+
+.role {
+    cursor: pointer;
+    padding: 20px;
+    border: 2px solid #58CD77;
+    border-radius: 10px;
+    transition: transform 0.3s;
+}
+
+.role:hover {
+    transform: scale(1.1);
+}
+
+.role-logo {
+    width: 150px;
+    height: 150px;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
+/* style.css */
+body.dark-mode {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 50%;
+    margin: auto;
+    text-align: center;
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+input, button {
+    padding: 10px;
+    margin: 10px;
+    width: 80%;
+    font-size: 1em;
+}
+
+button {
+    background-color: #58CD77;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4ca766;
+}
+/* style.css */
+
+/* Apply dark mode to the whole website */
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Style input fields and buttons */
+input[type="text"], input[type="password"], button {
+    padding: 10px;
+    margin: 10px;
+    background-color: #333333;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    cursor: pointer;
+    background-color: #58CD77;
+}
+
+button:hover {
+    background-color: #45a560;
+}
+
+/* Style for dark-themed form containers */
+div {
+    margin: 20px;
+}
+
+/* Style for headers */
+h2, h3 {
+    color: #58CD77;
+}
